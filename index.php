@@ -1,74 +1,94 @@
+<?php include 'inc/header.php' ?>
+
+
 <?php
 
+$valid = true;
+$found = true;
+
+if (isset($_POST['login'])) {
+    // $email = htmlspecialchars($_POST['email']);
+
+    if (isset($_POST['email']) && $_POST['email'] != "") {
+        if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
+
+            $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+            $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $q = "SELECT * FROM users WHERE email= '$email' AND password = '$password'";
+            $result = mysqli_query($conn, $q);
+            $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+            if (!empty($res)) {
+                print_r($res[0]);
+            }
+            else{
+                $found = false;
+            }
+        } else {
+            $valid = false;
+        }
+    } else {
+        $valid = false;
+    }
+}
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-</head>
+<form class="login100-form" method="POST" autocomplete="off" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+    <span class="login100-form-title">
+        Login
+    </span>
 
-<body>
-    <section class="h-100">
-        <div class="container h-100">
-            <div class="row justify-content-sm-center h-100">
-                <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-                    <div class="card shadow-lg">
-                        <div class="card-body p-5">
-                            <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
-                            <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
-                                <input type="hidden" value="csrf_token">
-                                <div class="mb-3">
-                                    <label class="mb-2 text-muted" for="email">E-Mail Address</label>
-                                    <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
-                                    <div class="invalid-feedback">
-                                        Email is invalid
-                                    </div>
-                                </div>
+    <div class="wrap-input100">
+        <input class="input100" autocomplete="off" type="email" name="email" placeholder="Email" required>
+        <span class="focus-input100"></span>
+        <span class="symbol-input100">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+        </span>
+    </div>
 
-                                <div class="mb-3">
-                                    <div class="mb-2 w-100">
-                                        <label class="text-muted" for="password">Password</label>
-                                        <a href="forgot_password.php" class="float-end">
-                                            Forgot Password?
-                                        </a>
-                                    </div>
-                                    <input id="password" type="password" class="form-control" name="password" required>
-                                    <div class="invalid-feedback">
-                                        Password is required
-                                    </div>
-                                </div>
+    <div class="wrap-input100">
+        <input class="input100" autocomplete="off" type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+        <span class="focus-input100"></span>
+        <span class="symbol-input100">
+            <i class="fa fa-lock" aria-hidden="true"></i>
+        </span>
+    </div>
 
-                                <div class="d-flex align-items-center">
-                                    <div class="form-check">
-                                        <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                                        <label for="remember" class="form-check-label">Remember Me</label>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary ms-auto">
-                                        Login
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="card-footer py-3 border-0">
-                            <div class="text-center">
-                                Don't have an account? <a href="register.php" class="text-dark">Create One</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="text-center mt-5 text-muted">
-                        Copyright &copy; 2017-2021 &mdash; Your Company
-                    </div> -->
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="container">
+        <p class="text-center" style="color: red;">
+            <?php
+            // echo ($valid);
+            if (!$valid) {
+                echo ("Email Is Not Valid");
+            }
+            if (!$found) {
+                echo ("ACCOUNT NOT FOUND!");
+            }
+            ?>
+        </p>
+    </div>
 
-    <script src="js/login.js"></script>
-</body>
+    <div class="container-login100-form-btn">
+        <input class="login100-form-btn" type="submit" name="login" value="Login">
+    </div>
 
-</html>
+    <div class="text-center p-t-12">
+        <span class="txt1">
+            Forgot
+        </span>
+        <a class="txt2" href="forgot_password.php">
+            Username / Password?
+        </a>
+    </div>
+
+    <div class="text-center p-t-136">
+        <a class="txt2" href="register.php">
+            Create your Account
+            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+        </a>
+    </div>
+</form>
+
+<?php include 'inc/footer.php' ?>

@@ -2,56 +2,41 @@
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<?php include 'inc/header.php' ?>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Forgot Password</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-</head>
+<form class="login100-form" method="POST" autocomplete="off" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <span class="login100-form-title">
+        Reset Password
+    </span>
 
-<body>
-    <section class="h-100">
-        <div class="container h-100">
-            <div class="row justify-content-sm-center h-100">
-                <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-                    <div class="card shadow-lg">
-                        <div class="card-body p-5">
-                            <h1 class="fs-4 card-title fw-bold mb-4">Forgot Password</h1>
-                            <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
-                                <input type="hidden" value="csrf_token">
-                                <div class="mb-3">
-                                    <label class="mb-2 text-muted" for="email">E-Mail Address</label>
-                                    <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
-                                    <div class="invalid-feedback">
-                                        Email is invalid
-                                    </div>
-                                </div>
+    <div class="wrap-input100">
+        <input class="input100" autocomplete="off" type="email" name="email" placeholder="Email" required>
+        <span class="focus-input100"></span>
+        <span class="symbol-input100">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+        </span>
+    </div>
 
-                                <div class="d-flex align-items-center">
-                                    <button type="submit" class="btn btn-primary ms-auto">
-                                        Send Link
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="card-footer py-3 border-0">
-                            <div class="text-center">
-                                Remember your password? <a href="index.php" class="text-dark">Login</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="text-center mt-5 text-muted">
-                        Copyright &copy; 2017-2021 &mdash; Your Company
-                    </div> -->
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="container-login100-form-btn">
+        <button class="login100-form-btn">
+            Submit
+        </button>
+    </div>
 
-    <script src="js/login.js"></script>
-</body>
+    <div class="text-center p-t-12">
+        <span class="txt1">
+            Back to
+        </span>
+        <a class="txt2" href="index.php">
+            Login?
+        </a>
+    </div>
 
-</html>
+    <div class="text-center p-t-136">
+        <a class="txt2" href="register.php">
+            Create an account?
+            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+        </a>
+    </div>
+</form>
+<?php include 'inc/footer.php' ?>
