@@ -49,7 +49,8 @@ if (isset($_POST['login'])) {
     </div>
 
     <div class="wrap-input100">
-        <input class="input100" autocomplete="off" type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+        <!-- <input class="input100" autocomplete="off" type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required> -->
+        <input class="input100" autocomplete="off" type="password" name="password" placeholder="Password" required>
         <span class="focus-input100"></span>
         <span class="symbol-input100">
             <i class="fa fa-lock" aria-hidden="true"></i>
@@ -64,7 +65,7 @@ if (isset($_POST['login'])) {
                 echo ("EMAIL IS NOT VALID!");
             }
             if (!$found) {
-                echo ("ACCOUNT NOT FOUND!");
+                echo ("EITHER EMAIL OR PASSWORD IS WRONG. PLEASE TRY AGAIN!");
             }
             ?>
         </p>

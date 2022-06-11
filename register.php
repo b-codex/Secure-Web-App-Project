@@ -6,7 +6,7 @@ $found = true;
 $success = null;
 
 if (isset($_POST['register'])) {
-    
+
     if (isset($_POST['email']) && $_POST['email'] != "") {
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
 
@@ -15,7 +15,15 @@ if (isset($_POST['register'])) {
             $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
 
             $q = "INSERT INTO users (name, email, password) VALUES ('$name','$email','$password')";
-            $result = mysqli_query($conn, $q);
+            $result = false;
+            try {
+                $result =  mysqli_query($conn, $q);
+                // $conn->multi_query($q);
+                
+            } catch (\Throwable $th) {
+                // echo "Failed";
+            }
+
             
             if ($result) {
                 $success = true;
@@ -65,7 +73,8 @@ if (isset($_POST['register'])) {
     </div>
 
     <div class="wrap-input100">
-        <input class="input100" autocomplete="off" type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+        <!-- <input class="input100" autocomplete="off" type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required> -->
+        <input class="input100" autocomplete="off" type="password" name="password" placeholder="Password" required>
         <span class="focus-input100"></span>
         <span class="symbol-input100">
             <i class="fa fa-lock" aria-hidden="true"></i>
