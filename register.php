@@ -1,13 +1,52 @@
-<?php
-
-?>
-
 <?php include 'inc/header.php' ?>
 
-<form class="login100-form" method="POST" autocomplete="off" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<?php
+$valid = true;
+$found = true;
+$success = null;
+
+if (isset($_POST['register'])) {
+    
+    if (isset($_POST['email']) && $_POST['email'] != "") {
+        if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
+
+            $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
+            $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+            $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $q = "INSERT INTO users (name, email, password) VALUES ('$name','$email','$password')";
+            $result = mysqli_query($conn, $q);
+            
+            if ($result) {
+                $success = true;
+            } else {
+                $success = false;
+            }
+        } else {
+            $valid = false;
+        }
+    } else {
+        $valid = false;
+    }
+}
+?>
+
+<form class="login100-form" method="POST" autocomplete="off" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
     <span class="login100-form-title">
         Create your account
     </span>
+
+    <div class="container">
+        <p class="text-center" style="color: green;">
+            <?php
+            // echo ($valid);
+            if ($success) {
+                echo ("ACCOUNT CREATED!");
+            }
+
+            ?>
+        </p>
+    </div>
 
     <div class="wrap-input100">
         <input class="input100" type="text" autocomplete="off" name="name" placeholder="Your Name" required>
@@ -33,10 +72,25 @@
         </span>
     </div>
 
+    <div class="container">
+        <p class="text-center" style="color: red;">
+            <?php
+            // echo ($valid);
+            if (!$valid) {
+                echo ("EMAIL IS NOT VALID!");
+            }
+            if (!$found) {
+                echo ("USER ALREADY EXISTS!");
+            }
+            if ($success === false) {
+                echo ("ACCOUNT NOT CREATED!");
+            }
+            ?>
+        </p>
+    </div>
+
     <div class="container-login100-form-btn">
-        <button class="login100-form-btn">
-            Create account
-        </button>
+        <input class="login100-form-btn" type="submit" name="register" value="Create Account">
     </div>
 
     <div class="text-center p-t-12">

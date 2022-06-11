@@ -20,7 +20,7 @@ if (isset($_POST['login'])) {
             $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
             if (!empty($res)) {
-                print_r($res[0]);
+                // print_r($res[0]);
             }
             else{
                 $found = false;
@@ -61,7 +61,7 @@ if (isset($_POST['login'])) {
             <?php
             // echo ($valid);
             if (!$valid) {
-                echo ("Email Is Not Valid");
+                echo ("EMAIL IS NOT VALID!");
             }
             if (!$found) {
                 echo ("ACCOUNT NOT FOUND!");
