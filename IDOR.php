@@ -25,6 +25,15 @@ function profile_renamer()
         rename($file, substr($dir, 0, -1) . guidv4() . ".png");
     }
 }
+function picture_renamer()
+{
+    guidv4();
+
+    $dir = "images/secret/*";
+    foreach (glob($dir) as $file) {
+        rename($file, substr($dir, 0, -1) . guidv4() . ".png");
+    }
+}
 profile_renamer();
 
 // echo ($dir . guidv4() . ".png");

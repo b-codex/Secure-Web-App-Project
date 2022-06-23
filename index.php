@@ -10,11 +10,16 @@ $found = true;
 $success = null;
 $captcha = false;
 $captcha_val = generate_captcha_image();
-if (isset($_POST["Name"]) && $_POST["Name"] != "") {
-    header("Location:./vendor/gotyou.php");
-} else {
 
-    if (isset($_POST['login'])) {
+
+
+session_start();
+$_SESSION["token"] = bin2hex(random_bytes(32));
+$_SESSION["token-expire"] = time() + 10;
+if (isset($_POST["Name"])&& $_POST["Name"]!=""){
+header("Location:./vendor/gotyou.php");
+}else{
+if (isset($_POST['login'])) {
 
 
         if ((isset($_POST['email']) && ($_POST['email'] != "")) && (isset($_POST['captcha']) == $captcha_val)) {
@@ -35,17 +40,33 @@ if (isset($_POST["Name"]) && $_POST["Name"] != "") {
                 /* Executing the query. */
                 $result = mysqli_query($conn, $q);
 
-                /* Fetching all the results from the database. */
-                $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-                /* This is checking if the result is empty or not. If it is empty, then it will set the
-            variable to false. */
-
-                if (!empty($res)) {
-                    header("Location:session.php");
-                } else {
-                    $found = false;
+            /* Fetching all the results from the database. */
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            
+            if(is_array($res)){
+                $_SESSION["email"] = $email;
+                $_SESSION["password"] = $password;
+            }else{
+                if ($captcha == 'wrong') {
+                    echo ('Invalid CAPTCHA');
+                } elseif (!$valid || !$found) {
+                    echo ('Invalid Credentials');
                 }
+            }
+            if(!isset($_POST["token"]) || !isset($_SESSION['token'])){
+                exit("token not set");
+            }
+            if(time() >= $_SESSION["token-expire"]){
+                exit("Token expired. Reload the form.");
+            }
+            if($_POST["token"]== $_SESSION["token"]){
+                echo "OK";
+                unset($_SESSION['token']);
+            }
+            /* This is checking if the result is empty or not. If it is empty, then it will set the
+            variable to false. */
+            if (!empty($res)) {
+                // header("Location:session.php");
             } else {
                 $valid = false;
             }
@@ -53,7 +74,35 @@ if (isset($_POST["Name"]) && $_POST["Name"] != "") {
             $valid = false;
         }
     }
+    
+    // //start session
+    // if(!isset($_POST["token"]) || !isset ($_SESSION["token"])){
+    //     header("Location:index.php");
+    // }
+    // if($_POST["token"]== $_SESSION["token"]){
+    //     if(time()>= $_SESSION['token-expire']){
+    //         exit (header("Location:./index.php"));
+    //     }
+        
+    //     header("Location:dashboard.php");
+        
+        
+    //     echo "ok";
+    //     unset($_SESSION['token']);
+    // }
+    // else{
+    //     header("Location:./index.php");
+    // }
 }
+if(isset($_SESSION["email"])){
+    header("Location:dashboard.php");
+}
+}
+
+
+
+
+
 ?>
 <html>
 <script>
@@ -108,6 +157,7 @@ if (isset($_POST["Name"]) && $_POST["Name"] != "") {
                         <span class="symbol-input100">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
                         </span>
+                        <input type="hidden" name="token" value="<?=$_SESSION['token']?>"></input>
                     </div>
 
                     <div class="wrap-input100">

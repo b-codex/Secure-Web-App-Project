@@ -1,26 +1,58 @@
 <?php include 'inc/header.php' ?>
+<?php session_start(); ?>
+<?php include('IDOR.php') ?>
 
 <!-- /* This is a PHP code that is selecting all the data from the music table and storing it in the 
 variable. */ -->
 <?php
-    $q = "SELECT * FROM music";
-    $result = mysqli_query($conn, $q);
-    $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$q = "SELECT * FROM music";
+$result = mysqli_query($conn, $q);
+$res = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+
 ?>
 
+<html>
+
+<head>
+    <style>
+        .avatar_img {
+
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin-right: 15px;
+            vertical-align: middle;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+
+        }
+    </style>
+</head>
 
 <body>
     <!-- Nav -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">N</a>
+            <?php
+
+            $profile = "images/profiles/*";
+            $totalpfp = 0;
+            foreach (glob($profile) as $file) {
+                $totalpfp += 1;
+            }
+            $pfpIndex = rand(0, $totalpfp);
+            $currentpfp = glob($profile)[0];
+            ?>
+            <img src="<?php echo $currentpfp ?>" class="avatar_img" alt="profile pic">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Logout</a>
+                        <h6><?php echo $_SESSION['email'] ?></h3>
+                            <a class="nav-link active" href="logout.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -54,7 +86,7 @@ variable. */ -->
                     </div>
                 </div>
 
-            <!-- /* Ending the foreach loop. */ -->
+                <!-- /* Ending the foreach loop. */ -->
             <?php endforeach; ?>
 
         </div>
@@ -66,3 +98,5 @@ variable. */ -->
 
 <!-- /* This is a PHP code that is including the footer.php file. */ -->
 <?php include 'inc/footer.php' ?>
+
+</html>
