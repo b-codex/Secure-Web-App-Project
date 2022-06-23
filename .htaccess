@@ -1,0 +1,28 @@
+
+Options -Indexes
+# enable mod_rewrite
+RewriteEngine On
+
+# RewriteCond = define rule condition
+# HTTP_REFERER = check from where the request originated
+# ! = exclude
+# ^ = start of string
+# [NC] = case insensitive search
+
+# \ = match any
+# . = any character
+# () = pattern, group
+# $ = end of string
+
+# [F] = forbidden, 403
+# [L] = stop processing further rules
+
+
+# blocks indexing directories
+RewriteCond "%{HTTP_REFERER}" "!^$"
+
+# RewriteCond "%{HTTP_REFERER}" "localhost/Secure-Web-App-Project/index.php" [NC] [F]
+
+# RewriteRule "\.(gif|jpg|png|php)$" "-" [F,NC]
+
+# we simply deny the request, if it didn't initiate from a page on our site
