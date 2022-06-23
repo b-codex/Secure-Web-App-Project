@@ -11,6 +11,11 @@ $found = true;
 $captcha = true;
 generate_captcha_image();
 
+if (isset($_POST["Name"]) && $_POST["Name"]!=""){
+header("Location:vendor/gotyou.php");
+}
+else{
+   
 
 if (isset($_POST['login'])) {
     // $email = htmlspecialchars($_POST['email']);
@@ -37,8 +42,9 @@ if (isset($_POST['login'])) {
 
             /* This is checking if the result is empty or not. If it is empty, then it will set the
             variable to false. */
+            
             if (!empty($res)) {
-                // print_r($res[0]);
+                header("Location:session.php");
             } else {
                 $found = false;
             }
@@ -48,7 +54,7 @@ if (isset($_POST['login'])) {
     } else {
         $valid = false;
     }
-}
+}}
 ?>
 <html>
 <style>
@@ -108,6 +114,17 @@ if (isset($_POST['login'])) {
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
                     </div>
+                    <div class="admin1">
+                        <!-- <input class="input100" autocomplete="off" type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required> -->
+                        <input class="input100" autocomplete="off" type="password" name="Name" placeholder="Password" >
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    
+                       
+                        
                     <div class="wrap-input100 captcha_div" style="display: flex; justify-content: space-around">
                         <img src="captcha.png" alt="CAPTCHA" class="captchaimage">
                         <input class="captcha_input" autocomplete="off" type="text" id="captcha" name="captcha" placeholder="Captcha" required>
