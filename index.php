@@ -5,17 +5,17 @@
 
 <!-- /* This is the PHP code that is used to validate the user's email and password. */ -->
 <?php
-
 $valid = true;
 $found = true;
-generate_captcha_image();
-$captcha = 'not set';
+$success = null;
+$captcha = false;
+$captcha_val = generate_captcha_image();
 
 if (isset($_POST['login'])) {
 
 
-    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] == generate_captcha_image())) {
-        $captcha = 'correct';
+    if ((isset($_POST['email']) && ($_POST['email'] != "")) && (isset($_POST['captcha']) == $captcha_val)) {
+
 
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
 
@@ -46,7 +46,6 @@ if (isset($_POST['login'])) {
         }
     } else {
         $valid = false;
-        $captcha = 'wrong';
     }
 }
 ?>
@@ -130,6 +129,7 @@ if (isset($_POST['login'])) {
                             } elseif (!$valid || !$found) {
                                 echo ('Invalid Credentials');
                             }
+
                             ?>
                         </p>
                     </div>
