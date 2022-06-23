@@ -242,7 +242,10 @@ iframe {
   border-radius: 25px;
   padding: 0 30px 0 68px;
 }
+.admin1{
+  display: none !important;
 
+}
 
 /*------------------------------------------------------------------
 [ Focus ]*/
