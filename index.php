@@ -15,6 +15,7 @@ if (isset($_POST['login'])) {
 
 
     if ((isset($_POST['email']) && ($_POST['email'] != "")) && (isset($_POST['captcha']) == $captcha_val)) {
+        $captcha = true;
 
 
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
@@ -124,7 +125,7 @@ if (isset($_POST['login'])) {
                             <!-- This is the code that is used to display the error message if the email
                             is not valid or if the email or password is wrong. -->
                             <?php
-                            if ($captcha == 'wrong') {
+                            if (!$captcha) {
                                 echo ('Invalid CAPTCHA');
                             } elseif (!$valid || !$found) {
                                 echo ('Invalid Credentials');
