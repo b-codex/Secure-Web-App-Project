@@ -8,15 +8,14 @@
 
 $valid = true;
 $found = true;
-$captcha = true;
 generate_captcha_image();
-
+$captcha = 'not set';
 
 if (isset($_POST['login'])) {
-    // $email = htmlspecialchars($_POST['email']);
 
-    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] != generate_captcha_image())) {
-        $captcha = false;
+
+    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] == generate_captcha_image())) {
+        $captcha = 'correct';
 
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
 
@@ -47,10 +46,16 @@ if (isset($_POST['login'])) {
         }
     } else {
         $valid = false;
+        $captcha = 'wrong';
     }
 }
 ?>
 <html>
+<script>
+    window.onload = function() {
+        event.preventDefault();
+    };
+</script>
 <style>
     .captcha_div {
         display: flex;
@@ -61,7 +66,7 @@ if (isset($_POST['login'])) {
 
     .captcha_input {
         border: 1px solid lightgray;
-        margin-left: 5px;
+        margin-left: 2px;
         padding: 5px;
         border-radius: 8px;
         line-height: 38px;
@@ -120,15 +125,10 @@ if (isset($_POST['login'])) {
                             <!-- This is the code that is used to display the error message if the email
                             is not valid or if the email or password is wrong. -->
                             <?php
-                            // echo ($valid);
-                            if (!$valid) {
-                                echo ("EMAIL IS NOT VALID!");
-                            }
-                            if (!$captcha) {
-                                echo ("INVALID CAPTCHA!");
-                            }
-                            if (!$found) {
-                                echo ("EITHER EMAIL OR PASSWORD IS WRONG. PLEASE TRY AGAIN!");
+                            if ($captcha == 'wrong') {
+                                echo ('Invalid CAPTCHA');
+                            } elseif (!$valid || !$found) {
+                                echo ('Invalid Credentials');
                             }
                             ?>
                         </p>

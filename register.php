@@ -9,16 +9,17 @@
 $valid = true;
 $found = true;
 $success = null;
-$captcha = 'not set';
 generate_captcha_image();
 // echo (generate_captcha_image());
 /* This is checking if the register button has been clicked. */
+$captcha = '';
 if (isset($_POST['register'])) {
 
 
+
     /* This is checking if the email field is empty. */
-    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] != generate_captcha_image())) {
-        $captcha = 'wrong';
+    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] == generate_captcha_image())) {
+        $captcha = 'correct';
 
         /* This is checking if the email is valid. */
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
@@ -62,6 +63,11 @@ if (isset($_POST['register'])) {
 ?>
 
 <html>
+<script>
+    window.onload = function() {
+        event.preventDefault();
+    };
+</script>
 <style>
     .captcha_div {
         display: flex;
@@ -151,19 +157,15 @@ if (isset($_POST['register'])) {
                         <p class="text-center" style="color: red;">
 
                             <!-- /* This is checking if the email is valid. */ -->
+
+
                             <?php
-                            // echo ($valid);
-                            if (!$valid) {
-                                echo ("EMAIL IS NOT VALID!");
-                            }
-                            if (!$found) {
-                                echo ("USER ALREADY EXISTS!");
-                            }
-                            if ($captcha == 'wrong') {
-                                echo ("Invalid CAPTCHA! \r");
-                            }
-                            if ($success === false) {
-                                echo ("ACCOUNT NOT CREATED!");
+                            if ($captcha != 'correct') {
+                                echo ('Invalid CAPTCHA');
+                            } elseif (!$found) {
+                                echo ("Account already exists!");
+                            } elseif ($success === false) {
+                                echo ("Couldn't create an account!");
                             }
                             ?>
                         </p>
