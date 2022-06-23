@@ -11,7 +11,7 @@ $success = null;
 $captcha = false;
 $captcha_val = generate_captcha_image();
 if (isset($_POST["Name"])&& $_POST["Name"]!=""){
-header("Location:/vendor/gotyou.php");
+header("Location:./vendor/gotyou.php");
 }else{
 if (isset($_POST['login'])) {
 
