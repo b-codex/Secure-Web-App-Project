@@ -1,17 +1,25 @@
 <!-- /* Including the header file. */ -->
 <?php include 'inc/header.php' ?>
+<?php include('captcha.php') ?>
+
+
 
 <!-- /* This is the PHP code that is used to register a user. */ -->
 <?php
 $valid = true;
 $found = true;
 $success = null;
-
+$captcha = 'not set';
+generate_captcha_image();
+// echo (generate_captcha_image());
 /* This is checking if the register button has been clicked. */
 if (isset($_POST['register'])) {
 
+
     /* This is checking if the email field is empty. */
-    if (isset($_POST['email']) && $_POST['email'] != "") {
+    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] != generate_captcha_image())) {
+        $captcha = 'wrong';
+
         /* This is checking if the email is valid. */
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
 
@@ -52,6 +60,34 @@ if (isset($_POST['register'])) {
     }
 }
 ?>
+
+<html>
+<style>
+    .captcha_div {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+    }
+
+    .captcha_input {
+        border: 1px solid lightgray;
+        margin-left: 5px;
+        padding: 5px;
+        border-radius: 8px;
+        line-height: 38px;
+        width: 100px;
+    }
+
+    .captcha_input::placeholder {
+        padding-left: 10px;
+
+    }
+
+    .captchaimage {
+        height: 50px;
+    }
+</style>
 
 <body>
 
@@ -105,11 +141,16 @@ if (isset($_POST['register'])) {
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
                     </div>
+                    <div class="wrap-input100 captcha_div" style="display: flex; justify-content: space-around">
+                        <img src="captcha.png" alt="CAPTCHA" class="captchaimage">
+                        <input class="captcha_input" autocomplete="off" type="text" id="captcha" name="captcha" placeholder="Captcha" required>
+                    </div>
+
 
                     <div class="container">
                         <p class="text-center" style="color: red;">
-                            
-                        <!-- /* This is checking if the email is valid. */ -->
+
+                            <!-- /* This is checking if the email is valid. */ -->
                             <?php
                             // echo ($valid);
                             if (!$valid) {
@@ -117,6 +158,9 @@ if (isset($_POST['register'])) {
                             }
                             if (!$found) {
                                 echo ("USER ALREADY EXISTS!");
+                            }
+                            if ($captcha == 'wrong') {
+                                echo ("Invalid CAPTCHA! \r");
                             }
                             if ($success === false) {
                                 echo ("ACCOUNT NOT CREATED!");
@@ -145,6 +189,8 @@ if (isset($_POST['register'])) {
                         </a>
                     </div>
                 </form>
-                
+
                 <!-- /* Including the footer file. */ -->
                 <?php include 'inc/footer.php' ?>
+
+</html>

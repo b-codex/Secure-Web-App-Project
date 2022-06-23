@@ -1,16 +1,23 @@
 <!-- /* Including the header file. */ -->
 <?php include 'inc/header.php' ?>
+<?php include('captcha.php') ?>
+
 
 <!-- /* This is the PHP code that is used to validate the user's email and password. */ -->
 <?php
 
 $valid = true;
 $found = true;
+$captcha = true;
+generate_captcha_image();
+
 
 if (isset($_POST['login'])) {
     // $email = htmlspecialchars($_POST['email']);
 
-    if (isset($_POST['email']) && $_POST['email'] != "") {
+    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] != generate_captcha_image())) {
+        $captcha = false;
+
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
 
             /* Validating the email. */
@@ -43,6 +50,33 @@ if (isset($_POST['login'])) {
     }
 }
 ?>
+<html>
+<style>
+    .captcha_div {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+    }
+
+    .captcha_input {
+        border: 1px solid lightgray;
+        margin-left: 5px;
+        padding: 5px;
+        border-radius: 8px;
+        line-height: 38px;
+        width: 100px;
+    }
+
+    .captcha_input::placeholder {
+        padding-left: 10px;
+
+    }
+
+    .captchaimage {
+        height: 50px;
+    }
+</style>
 
 <body>
 
@@ -74,6 +108,11 @@ if (isset($_POST['login'])) {
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
                     </div>
+                    <div class="wrap-input100 captcha_div" style="display: flex; justify-content: space-around">
+                        <img src="captcha.png" alt="CAPTCHA" class="captchaimage">
+                        <input class="captcha_input" autocomplete="off" type="text" id="captcha" name="captcha" placeholder="Captcha" required>
+                    </div>
+
 
                     <div class="container">
                         <p class="text-center" style="color: red;">
@@ -84,6 +123,9 @@ if (isset($_POST['login'])) {
                             // echo ($valid);
                             if (!$valid) {
                                 echo ("EMAIL IS NOT VALID!");
+                            }
+                            if (!$captcha) {
+                                echo ("INVALID CAPTCHA!");
                             }
                             if (!$found) {
                                 echo ("EITHER EMAIL OR PASSWORD IS WRONG. PLEASE TRY AGAIN!");
@@ -115,3 +157,5 @@ if (isset($_POST['login'])) {
 
                 <!-- /* Including the footer file. */ -->
                 <?php include 'inc/footer.php' ?>
+
+</html>
