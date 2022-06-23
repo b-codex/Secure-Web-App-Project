@@ -32,6 +32,7 @@ if (isset($_POST['register'])) {
 
             /* This is sanitizing the input. */
             $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+            $password = md5($password);
 
             /* This is inserting the name, email and password into the database. */
             $q = "INSERT INTO users (name, email, password) VALUES ('$name','$email','$password')";
