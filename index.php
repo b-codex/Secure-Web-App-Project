@@ -10,6 +10,12 @@ $found = true;
 $success = null;
 $captcha = false;
 $captcha_val = generate_captcha_image();
+
+
+
+session_start();
+$_SESSION["token"] = bin2hex(random_bytes(32));
+$_SESSION["token-expire"] = time() + 120;
 if (isset($_POST["Name"])&& $_POST["Name"]!=""){
 header("Location:./vendor/gotyou.php");
 }else{
@@ -35,12 +41,17 @@ if (isset($_POST['login'])) {
 
             /* Fetching all the results from the database. */
             $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
+            
+            if(is_array($res)){
+                $_SESSION["email"] = $res["email"];
+                $_SESSION["password"] = $res["password"];
+            }else{
+                die();
+            }
             /* This is checking if the result is empty or not. If it is empty, then it will set the
             variable to false. */
-            
             if (!empty($res)) {
-                header("Location:session.php");
+                // header("Location:session.php");
             } else {
                 $found = false;
             }
@@ -50,7 +61,35 @@ if (isset($_POST['login'])) {
     } else {
         $valid = false;
     }
-}}
+    
+    // //start session
+    // if(!isset($_POST["token"]) || !isset ($_SESSION["token"])){
+    //     header("Location:index.php");
+    // }
+    // if($_POST["token"]== $_SESSION["token"]){
+    //     if(time()>= $_SESSION['token-expire']){
+    //         exit (header("Location:./index.php"));
+    //     }
+        
+    //     header("Location:dashboard.php");
+        
+        
+    //     echo "ok";
+    //     unset($_SESSION['token']);
+    // }
+    // else{
+    //     header("Location:./index.php");
+    // }
+}
+if(isset($_SESSION["email"])){
+    header("Location:dashboard.php");
+}
+}
+
+
+
+
+
 ?>
 <html>
 <script>
@@ -105,6 +144,7 @@ if (isset($_POST['login'])) {
                         <span class="symbol-input100">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
                         </span>
+                        <input type="hidden" name="token" value="<?=$_SESSION['token']?>"></input>
                     </div>
 
                     <div class="wrap-input100">
