@@ -40,13 +40,17 @@ if (isset($_POST['login'])) {
             $result = mysqli_query($conn, $q);
 
             /* Fetching all the results from the database. */
-            $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
             
             if(is_array($res)){
-                $_SESSION["email"] = $res["email"];
-                $_SESSION["password"] = $res["password"];
+                $_SESSION["email"] = $email;
+                $_SESSION["password"] = $password;
             }else{
-                die();
+                if ($captcha == 'wrong') {
+                    echo ('Invalid CAPTCHA');
+                } elseif (!$valid || !$found) {
+                    echo ('Invalid Credentials');
+                }
             }
             /* This is checking if the result is empty or not. If it is empty, then it will set the
             variable to false. */
