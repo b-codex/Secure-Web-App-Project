@@ -9,16 +9,17 @@
 $valid = true;
 $found = true;
 $success = null;
-$captcha = 'not set';
-generate_captcha_image();
+$captcha = false;
+$captcha_val = generate_captcha_image();
 // echo (generate_captcha_image());
 /* This is checking if the register button has been clicked. */
 if (isset($_POST['register'])) {
 
 
+
     /* This is checking if the email field is empty. */
-    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] != generate_captcha_image())) {
-        $captcha = 'wrong';
+    if ((isset($_POST['email']) && ($_POST['email'] != "")) && (isset($_POST['captcha']) == $captcha_val)) {
+
 
         /* This is checking if the email is valid. */
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
@@ -31,6 +32,7 @@ if (isset($_POST['register'])) {
 
             /* This is sanitizing the input. */
             $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+            $password = md5($password);
 
             /* This is inserting the name, email and password into the database. */
             $q = "INSERT INTO users (name, email, password) VALUES ('$name','$email','$password')";
@@ -158,9 +160,6 @@ if (isset($_POST['register'])) {
                             }
                             if (!$found) {
                                 echo ("USER ALREADY EXISTS!");
-                            }
-                            if ($captcha == 'wrong') {
-                                echo ("Invalid CAPTCHA! \r");
                             }
                             if ($success === false) {
                                 echo ("ACCOUNT NOT CREATED!");

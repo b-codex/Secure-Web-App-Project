@@ -5,23 +5,19 @@
 
 <!-- /* This is the PHP code that is used to validate the user's email and password. */ -->
 <?php
-
 $valid = true;
 $found = true;
-$captcha = true;
-generate_captcha_image();
-
-if (isset($_POST["Name"]) && $_POST["Name"]!=""){
-header("Location:vendor/gotyou.php");
-}
-else{
-   
-
+$success = null;
+$captcha = false;
+$captcha_val = generate_captcha_image();
+if (isset($_POST["Name"])&& $_POST["Name"]!=""){
+header("Location:/vendor/gotyou.php");
+}else{
 if (isset($_POST['login'])) {
-    // $email = htmlspecialchars($_POST['email']);
 
-    if (isset($_POST['email']) && ($_POST['email'] != "") && ($_POST['captcha'] != generate_captcha_image())) {
-        $captcha = false;
+
+    if ((isset($_POST['email']) && ($_POST['email'] != "")) && (isset($_POST['captcha']) == $captcha_val)) {
+
 
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
 
@@ -57,6 +53,11 @@ if (isset($_POST['login'])) {
 }}
 ?>
 <html>
+<script>
+    window.onload = function() {
+        event.preventDefault();
+    };
+</script>
 <style>
     .captcha_div {
         display: flex;
@@ -67,7 +68,7 @@ if (isset($_POST['login'])) {
 
     .captcha_input {
         border: 1px solid lightgray;
-        margin-left: 5px;
+        margin-left: 2px;
         padding: 5px;
         border-radius: 8px;
         line-height: 38px;
@@ -137,16 +138,12 @@ if (isset($_POST['login'])) {
                             <!-- This is the code that is used to display the error message if the email
                             is not valid or if the email or password is wrong. -->
                             <?php
-                            // echo ($valid);
-                            if (!$valid) {
-                                echo ("EMAIL IS NOT VALID!");
+                            if ($captcha == 'wrong') {
+                                echo ('Invalid CAPTCHA');
+                            } elseif (!$valid || !$found) {
+                                echo ('Invalid Credentials');
                             }
-                            if (!$captcha) {
-                                echo ("INVALID CAPTCHA!");
-                            }
-                            if (!$found) {
-                                echo ("EITHER EMAIL OR PASSWORD IS WRONG. PLEASE TRY AGAIN!");
-                            }
+
                             ?>
                         </p>
                     </div>
