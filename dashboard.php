@@ -1,5 +1,5 @@
 <?php include 'inc/header.php' ?>
-
+<?php session_start();?>
 <!-- /* This is a PHP code that is selecting all the data from the music table and storing it in the 
 variable. */ -->
 <?php
@@ -20,6 +20,7 @@ variable. */ -->
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
+                        <h6><?php echo $_SESSION['email']?></h3>
                         <a class="nav-link active" href="logout.php">Logout</a>
                     </li>
                 </ul>
