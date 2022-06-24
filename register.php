@@ -20,7 +20,6 @@ if (isset($_POST['register'])) {
     /* This is checking if the email field is empty. */
     if ((isset($_POST['email']) && ($_POST['email'] != "")) && (isset($_POST['captcha']) == $captcha_val)) {
 
-
         /* This is checking if the email is valid. */
         if (filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
 
@@ -155,6 +154,9 @@ if (isset($_POST['register'])) {
                             <!-- /* This is checking if the email is valid. */ -->
                             <?php
                             // echo ($valid);
+                            if (!$valid) {
+                                echo ("EMAIL IS NOT VALID!");
+                            }
                             if (!$valid) {
                                 echo ("EMAIL IS NOT VALID!");
                             }
