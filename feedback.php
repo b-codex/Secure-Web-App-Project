@@ -10,6 +10,7 @@ session_start();
 $valid = null;
 $found = null;
 $success = null;
+$user = $_SESSION['user'];
 
 /* Checking if the submit button has been clicked. */
 if (isset($_POST['submit'])) {
@@ -38,7 +39,7 @@ if (isset($_POST['submit'])) {
                     $year = $_SESSION['year'];
                     $genre = $_SESSION['genre'];
 
-                    $q = "INSERT INTO feedback (name, content, title, year, artist, genre) VALUES ('$name','$content', '$title', '$year', '$artist', '$genre')";
+                    $q = "INSERT INTO feedback (name, content, title, year, artist, genre, user) VALUES ('$name','$content', '$title', '$year', '$artist', '$genre', '$user')";
                     /* Trying to insert the data into the database. */
                     $result =  mysqli_query($conn, $q);
                     // print_r($result);

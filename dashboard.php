@@ -58,6 +58,10 @@ if ($redirect == true) {
                         <h6><?php echo $_SESSION['email'] ?></h3>
                             <a class="nav-link active" href="logout.php">Logout</a>
                     </li>
+                    <li class="nav-item">
+                        <h6><?php echo $_SESSION['email'] ?></h3>
+                            <a class="nav-link active" href="review_feedback.php">Review Feedbacks</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -75,9 +79,25 @@ if ($redirect == true) {
 
                 <div class="col-lg-4 col-md-6 col-sm-12 my-3">
                     <div class="card" style="width: 18rem;">
-                        <img src="<?php echo $val['image'] ?>" class="card-img-top" alt="...">
+                       <img src="<?php echo $val['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title text-center"><?php echo $val['title'] ?></h5>
+                        <form method="post">
+                            <input class="btn btn-dark" type="submit" name="<?php echo $val['title'] ?>" value="<?php echo $val['title'] ?>" style="background-color: transparent; border:0px; color:black; cursor:pointer;">
+                        </form>
+
+                        <?php if (isset($_POST['title'])) : ?>
+                                <?php {
+                                    $_SESSION['title'] = $val['title'];
+                                    $_SESSION['artist'] = $val['artist'];
+                                    $_SESSION['year'] = $val['year'];
+                                    $_SESSION['genre'] = $val['genre'];
+                                    $redirect = true;
+                                }
+                                ?>
+                                <script>
+                                    window.location.replace("feedback.php");
+                                </script>
+                            <?php endif; ?>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Artist: <?php echo $val['artist'] ?></li>

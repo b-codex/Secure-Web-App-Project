@@ -49,7 +49,9 @@ if (isset($_POST['login'])) {
                 if(is_array($res)){
                                     
                     $_SESSION["email"] = $email;
-                    $_SESSION["password"] = $password;
+                    // $_SESSION["password"] = $password;
+                    $_SESSION["user"] = $res['user'];
+
                 }else{
                     if ($captcha == 'wrong') {
                         echo ('Invalid CAPTCHA');
@@ -85,7 +87,7 @@ if (isset($_POST['login'])) {
     //     header("Location:./index.php");
     // }
 }
-if(isset($_SESSION["email"])){
+if(isset($_SESSION["email"]) && isset($_SESSION['user'])){
     header("Location:dashboard.php");
 }
 }
