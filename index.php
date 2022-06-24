@@ -39,23 +39,24 @@ if (isset($_POST['login'])) {
                 /* Executing the query. */
                 $result = mysqli_query($conn, $q);
 
-            /* Fetching all the results from the database. */
-            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
-            
-            if(is_array($res)){
-                $_SESSION["email"] = $email;
-                $_SESSION["password"] = $password;
-            }else{
-                if ($captcha == 'wrong') {
-                    echo ('Invalid CAPTCHA');
-                } elseif (!$valid || !$found) {
-                    echo ('Invalid Credentials');
-                }
-            }
+                /* Fetching all the results from the database. */
+                $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
             
             /* This is checking if the result is empty or not. If it is empty, then it will set the
             variable to false. */
             if (!empty($res)) {
+                
+                if(is_array($res)){
+                                    
+                    $_SESSION["email"] = $email;
+                    $_SESSION["password"] = $password;
+                }else{
+                    if ($captcha == 'wrong') {
+                        echo ('Invalid CAPTCHA');
+                    } elseif (!$valid || !$found) {
+                        echo ('Invalid Credentials');
+                    }
+                }
                 // header("Location:session.php");
             } else {
                 $valid = false;

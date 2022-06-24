@@ -8,7 +8,11 @@ variable. */ -->
 $q = "SELECT * FROM music";
 $result = mysqli_query($conn, $q);
 $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$redirect = null;
 
+if ($redirect == true) {
+    header("Location: feedback.php");
+}
 
 ?>
 
@@ -63,9 +67,8 @@ $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <!-- Body Code -->
 
     <div class="container">
-        
-        <div class="row">
 
+        <div class="row">
             <!-- /* This is a PHP code that is looping through the array and storing each value in the
             variable. */ -->
             <?php foreach ($res as $val) : ?>
@@ -82,8 +85,28 @@ $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
                             <li class="list-group-item">Genre: <?php echo $val['genre'] ?></li>
                         </ul>
                         <div class="card-body text-center">
-                            <a type="button" class="btn btn-outline-dark" href="feedback.php">Leave Feedback</a>
+                            <form method="post">
+                                <input type="submit" class="btn btn-outline-dark" name='leave_feedback' value="Leave Feedback">
+                            </form>
+
+                            <?php if (isset($_POST['leave_feedback'])) : ?>
+                                <?php {
+                                    $_SESSION['title'] = $val['title'];
+                                    $_SESSION['artist'] = $val['artist'];
+                                    $_SESSION['year'] = $val['year'];
+                                    $_SESSION['genre'] = $val['genre'];
+                                    $redirect = true;
+                                }
+                                ?>
+                                <script>
+                                    window.location.replace("feedback.php");
+                                </script>
+                            <?php endif; ?>
                         </div>
+
+                        <script>
+
+                        </script>
                     </div>
                 </div>
 
