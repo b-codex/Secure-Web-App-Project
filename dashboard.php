@@ -32,6 +32,7 @@ variable. */ -->
     <!-- Body Code -->
 
     <div class="container">
+        
         <div class="row">
 
             <!-- /* This is a PHP code that is looping through the array and storing each value in the

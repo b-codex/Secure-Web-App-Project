@@ -1,7 +1,20 @@
-<?php include 'inc/header.php' ?>
+<?php include 'inc/header.php';
+require_once './Token.php';
 
+if(isset($_POST['content'],$_POST["name"])){
+    $content = $_POST['content'];
+    $name =  $_POST["name"];
+
+    if(!empty($content)&& !empty($name)){
+        if(Token::check($_POST['token'])){
+            echo '<script>alert("Welcome to Geeks for Geeks")</script>';;
+        }
+    }
+}
+?>
 
 <?php
+session_start();
 
 $valid = true;
 $found = true;
@@ -100,15 +113,15 @@ if (isset($_POST['submit'])) {
                             <!-- /* Checking if the email is valid or not. */ -->
                             <?php
                             // echo ($valid);
-                            if (!$valid) {
-                                echo ("EMAIL IS NOT VALID!");
-                            }
+                            // if (!$valid) {
+                            //     echo ("EMAIL IS NOT VALID!");
+                            // }
                             // if (!$success) {
                             //     echo ("AN UNEXPECTED ERROR HAS OCCURRED. PLEASE TRY AGAIN!");
                             // }
-                            if (!$found) {
-                                echo ("EITHER EMAIL OR PASSWORD IS WRONG. PLEASE TRY AGAIN!");
-                            }
+                            // if (!$found) {
+                            //     echo ("EITHER EMAIL OR PASSWORD IS WRONG. PLEASE TRY AGAIN!");
+                            // }
                             ?>
                         </p>
                     </div>
@@ -116,6 +129,7 @@ if (isset($_POST['submit'])) {
                     <div class="container-contact1-form-btn">
                         <input class="contact1-form-btn text-center" value="Submit" type="submit" name="submit">
                     </div>
+                    <input type="hidden" name="token" value = "<?php echo Token::generate();?>"> </input>
 
                     <div class="text-center p-t-12">
 
@@ -128,3 +142,6 @@ if (isset($_POST['submit'])) {
 
                 <!-- /* Including the footer. */ -->
                 <?php include 'inc/footer.php' ?>
+                <?php 
+                echo $_SESSION['token'];
+                ?>

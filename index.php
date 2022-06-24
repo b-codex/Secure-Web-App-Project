@@ -14,8 +14,7 @@ $captcha_val = generate_captcha_image();
 
 
 session_start();
-$_SESSION["token"] = bin2hex(random_bytes(32));
-$_SESSION["token-expire"] = time() + 10;
+
 if (isset($_POST["Name"])&& $_POST["Name"]!=""){
 header("Location:./vendor/gotyou.php");
 }else{
@@ -52,16 +51,7 @@ if (isset($_POST['login'])) {
                     echo ('Invalid Credentials');
                 }
             }
-            if(!isset($_POST["token"]) || !isset($_SESSION['token'])){
-                exit("token not set");
-            }
-            if(time() >= $_SESSION["token-expire"]){
-                exit("Token expired. Reload the form.");
-            }
-            if($_POST["token"]== $_SESSION["token"]){
-                echo "OK";
-                unset($_SESSION['token']);
-            }
+            
             /* This is checking if the result is empty or not. If it is empty, then it will set the
             variable to false. */
             if (!empty($res)) {
@@ -158,7 +148,6 @@ if(isset($_SESSION["email"])){
                         <span class="symbol-input100">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
                         </span>
-                        <input type="hidden" name="token" value="<?=$_SESSION['token']?>"></input>
                     </div>
 
                     <div class="wrap-input100">
